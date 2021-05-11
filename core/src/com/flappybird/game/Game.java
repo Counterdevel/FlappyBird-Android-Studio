@@ -28,11 +28,8 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 
 		batch = new SpriteBatch();																	//construção do batch
-		passaros = new Texture[3];
-		passaros[0] = new Texture("passaro1.png");
-		passaros[1] = new Texture("passaro2.png");										//Aplica textura para o passaro e cria uma animação
-		passaros[2] = new Texture("passaro3.png");
-		fundo = new Texture("fundo.png");												//Aplica textura para o fundo
+
+		TexturasAnimadas();
 
 		larguraDis = Gdx.graphics.getWidth();														//Pega a largura do dispositivo
 		alturaDis = Gdx.graphics.getHeight();														//Pega a altura do dispositivo
@@ -40,21 +37,20 @@ public class Game extends ApplicationAdapter {
 
 	}
 
+	private void TexturasAnimadas() {
+		passaros = new Texture[3];
+		passaros[0] = new Texture("passaro1.png");
+		passaros[1] = new Texture("passaro2.png");										//Aplica textura para o passaro e cria uma animação
+		passaros[2] = new Texture("passaro3.png");
+		fundo = new Texture("fundo.png");												//Aplica textura para o fundo
+	}
+
 	@Override
 	public void render () {
 
 		batch.begin();																				//Inicializa a renderização
 
-		if(variacao > 3)
-			variacao = 0;
-
-		boolean toqueTela = Gdx.input.justTouched();												//Variavel para reconhecer o toque na tela
-		if(Gdx.input.justTouched()){
-			gravidade = -25;																		//Aplica valor a gravidade aopós o toque;
-		}
-
-		if(posicaoInicialVerticalPassaro > 0 || toqueTela)											//Se a posicao inicial vertical do passaro for maior que 0 e tocarmos na tela
-			posicaoInicialVerticalPassaro = posicaoInicialVerticalPassaro - gravidade;				//Aplicamos gravidade no passaro
+		MovimentoComGravidade();
 
 		batch.draw(fundo,0,0, larguraDis, alturaDis);										//Renderiza o conteudo
 		batch.draw(passaros[(int) variacao], movimentaX,posicaoInicialVerticalPassaro);				//Renderiza o passaro aplica a animação e moviemnta o passaro para frente
@@ -68,7 +64,20 @@ public class Game extends ApplicationAdapter {
 		batch.end();																				//Termina a renderização
 
 	}
-	
+
+	private void MovimentoComGravidade() {
+		if(variacao > 3)
+			variacao = 0;
+
+		boolean toqueTela = Gdx.input.justTouched();												//Variavel para reconhecer o toque na tela
+		if(Gdx.input.justTouched()){
+			gravidade = -25;																		//Aplica valor a gravidade aopós o toque;
+		}
+
+		if(posicaoInicialVerticalPassaro > 0 || toqueTela)											//Se a posicao inicial vertical do passaro for maior que 0 e tocarmos na tela
+			posicaoInicialVerticalPassaro = posicaoInicialVerticalPassaro - gravidade;				//Aplicamos gravidade no passaro
+	}
+
 	@Override
 	public void dispose () {
 
